@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarHindis - Multilingual Entertainment Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #111827 0%, #4c1d95 50%, #111827 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+        
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: none;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .youtube-icon { background: #ff0000; }
+        .facebook-icon { background: #1877f2; }
+        .youtube-icon:hover { background: #cc0000; }
+        .facebook-icon:hover { background: #166fe5; }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 2rem;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 50%;
+            filter: blur(48px);
+            z-index: -1;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 25%;
+            right: 25%;
+            width: 24rem;
+            height: 24rem;
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: 50%;
+            filter: blur(48px);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 896px;
+            z-index: 1;
+        }
+        
+        .hero-icon {
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-title span {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #d1d5db;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .hero-description {
+            font-size: 1.125rem;
+            color: #c4b5fd;
+            margin-bottom: 3rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border-color: #a78bfa;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(167, 139, 250, 0.1);
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        .scroll-down {
+            margin-top: 4rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .section {
+            padding: 5rem 2rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title span {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #d1d5db;
+            max-width: 768px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        .language-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(167, 139, 250, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .language-card:hover::before {
+            opacity: 1;
+        }
+        
+        .language-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .language-icon {
+            width: 32px;
+            height: 32px;
+            color: #a78bfa;
+        }
+        
+        .language-star {
+            width: 24px;
+            height: 24px;
+            color: #fbbf24;
+        }
+        
+        .language-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .language-code {
+            font-size: 0.875rem;
+            color: #c4b5fd;
+            margin-bottom: 1rem;
+        }
+        
+        .language-btn {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .language-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        .social-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            min-width: 192px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .social-card-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .social-card-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+            text-align: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer-logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .footer-copyright {
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-tagline {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .social-icons {
+                gap: 0.5rem;
+            }
+            
+            .social-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="logo-text">StarHindis</div>
+            </a>
+            <div class="social-icons">
+                <a href="https://www.youtube.com/@StarHindis" target="_blank" class="social-icon youtube-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.facebook.com/@StarHindis" target="_blank" class="social-icon facebook-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-icon">
+                <i class="fas fa-globe-americas"></i>
+            </div>
+            <h1 class="hero-title">
+                <span>StarHindis</span>
+            </h1>
+            <p class="hero-subtitle">Your Global Gateway to Multilingual Entertainment</p>
+            <p class="hero-description">Experience the magic of storytelling in 15+ languages with our diverse network of YouTube channels</p>
+            <div class="hero-buttons">
+                <a href="#channels" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Explore Channels
+                </a>
+                <a href="https://www.youtube.com/@StarHindis" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-youtube"></i> Main Channel
+                </a>
+            </div>
+            <div class="scroll-down">
+                <i class="fas fa-chevron-down" style="font-size: 2rem; color: #a78bfa;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Channels Section -->
+    <section class="section" id="channels">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span>Our Language Network</span>
+            </h2>
+            <p class="section-subtitle">Discover our diverse collection of YouTube channels, each dedicated to bringing you premium content in your preferred language</p>
+        </div>
+        <div class="channels-grid">
+            <!-- English -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">English</h3>
+                <p class="language-code">Star Hindi English</p>
+                <a href="https://www.youtube.com/@StarHindiEnglish" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Hindi -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">हिंदी</h3>
+                <p class="language-code">Star Hindi Hindi</p>
+                <a href="https://www.youtube.com/@StarHindiHindi" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Tamil -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">தமிழ்</h3>
+                <p class="language-code">Star Hindi Tamil</p>
+                <a href="https://www.youtube.com/@StarHindiTamil" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Telugu -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">తెలుగు</h3>
+                <p class="language-code">Star Hindi Telugu</p>
+                <a href="https://www.youtube.com/@StarHindiTelugu" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Urdu -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">اردو</h3>
+                <p class="language-code">Star Hindi Urdu</p>
+                <a href="https://www.youtube.com/@StarHindiUrdu" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Arabic -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">العربية</h3>
+                <p class="language-code">Star Hindi Arabi</p>
+                <a href="https://www.youtube.com/@StarHindiArabi" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Gujarati -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">ગુજરાતી</h3>
+                <p class="language-code">Star Hindi Gujarati</p>
+                <a href="https://www.youtube.com/@StarHindiGujarati" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Marathi -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
+                <h3 class="language-name">मराठी</h3>
+                <p class="language-code">Star Hindi Marathi</p>
+                <a href="https://www.youtube.com/@StarHindiMarathi" target="_blank" class="language-btn">
+                    <i class="fas fa-play"></i> Watch Now
+                </a>
+            </div>
+            
+            <!-- Bengali -->
+            <div class="language-card">
+                <div class="language-header">
+                    <i class="fas fa-language language-icon"></i>
+                    <i class="fas fa-star language-star"></i>
+                </div>
